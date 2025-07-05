@@ -13,7 +13,20 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // Step 1: Create an array of size "length" to hold the multiples
+        double[] result = new double[length];
+
+
+        // Step 2: Loop through "length" times
+        for (int i = 0; i < length; i++)
+        {
+            // Step 3: Calculate the multiple and store it
+            result[i] = number * (i + 1);
+        }
+        
+        // Step 4: Return the array
+
+        return result; // replace this return statement with your own
     }
 
     /// <summary>
@@ -29,5 +42,20 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+
+        
+        
+        // Step 1: Slice the list into two parts
+
+        List<int> lastPart = data.GetRange(data.Count - amount, amount);
+        List<int> firstPart = data.GetRange(0, data.Count - amount);
+        // Step 2: Clear the original list
+        data.Clear();
+        // Step 3: Add rotated parts back to the original list
+
+        data.AddRange(lastPart);
+        data.AddRange(firstPart);
+        
+        
     }
 }
