@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.VisualBasic;
 
 public static class SetsAndMaps
 {
@@ -22,7 +23,25 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var seen = new HashSet<string>();
+        var result = new List<string>();
+
+        foreach (var word in words)
+        {
+
+            if (word[0] == word[1]) continue;
+            string reversed = $"{word[1]}{word[0]}";
+
+            if (seen.Contains(reversed))
+            {
+                result.Add($"{reversed} & {word}");
+            }
+            else
+            {
+                seen.Add(word);
+            }
+        }
+        return result.ToArray();
     }
 
     /// <summary>
@@ -42,6 +61,20 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
+
+            if (fields.Length >= 4)
+            {
+                var degree = fields[3].Trim();
+                if (degrees.ContainsKey(degree))
+                {
+                    degrees[degree]++;
+                }
+                else
+                {
+                    degrees[degree] = 1;
+                }
+                
+            }
             // TODO Problem 2 - ADD YOUR CODE HERE
         }
 
@@ -67,6 +100,49 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
+        string firstWord = word1.ToLower().Replace(" ", "");
+        string secondWord = word2.ToLower().Replace(" ", "");
+
+        if (firstWord.Length != secondWord.Length)
+            return false;
+
+
+        Dictionary<char, int> freqMap1 = new Dictionary<char, int>();
+        foreach (char c in firstWord)
+        {
+            if (freqMap1.ContainsKey(c))
+            {
+                freqMap1[c]++;
+            }
+            else
+            {
+                freqMap1[c] = 1;
+            }
+        }
+        Dictionary<char, int> freqMap2 = new Dictionary<char, int>();
+        foreach (char c in secondWord)
+        {
+            if (freqMap2.ContainsKey(c))
+            {
+                freqMap2[c]++;
+            }
+            else
+            {
+                freqMap2[c] = 1;
+            }
+        }
+        bool isMatch = true;
+        foreach (var pair in freqMap1)
+        {
+            if (!freqMap2.ContainsKey(pair.Key) || freqMap2[pair.Key] != pair.Value)
+            {
+                isMatch = false;
+                break;
+            }
+        }
+
+        if (isMatch) return true;
+
         return false;
     }
 
@@ -101,6 +177,17 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        List<string> result = new List<string>();
+
+        foreach (var feature in featureCollection.Features)
+        {
+            var props = feature.Properties;
+            if (!string.IsNullOrWhiteSpace(props.Place) && props.Mag.HasValue)
+            {
+                string formattedString = $"{props.Place} - Mag {props.Mag.Value:F2}";
+                result.Add(formattedString);
+            }
+        }
+            return result.ToArray();
     }
 }
